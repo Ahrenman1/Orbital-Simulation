@@ -1,0 +1,14 @@
+
+T0 = 1;
+Ti = 100*60;
+Tmax = 60*60*24*6;
+TA = [T0:Ti:Tmax];
+for i = T0:Ti:Tmax
+    r_sat = orb_with_ext_time(6.6e6,0,90,90,0,i,'g');
+    t = datetime(juliandate(2029,1,1,0,i,0),'convertfrom','juliandate');
+    groundStationView = ground_station_visible(r_sat.',[t.Year t.Month t.Day t.Hour t.Minute t.Second]);
+    if groundStationView
+        disp(t);
+    end
+    
+end
