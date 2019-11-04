@@ -15,4 +15,8 @@ hold on
 %lookingup colour triplet
 colour_trip = colour_wheel(mod(i,smoothness)+1,:);
 plot(x(i), y(i),'o', 'MarkerFace', colour_trip)
+
+% i think for scatter it is the following:
+%dotsize=3 %this is a variable to hold the size of the dots.
+%scatter(x(i),y(i),dotsize,colour_trip);
 end
