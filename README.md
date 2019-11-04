@@ -3,7 +3,7 @@ This code takes the orbital parameters of 6 orbits, and simulates them moving ar
 
 ## ToDo
 - [x] Update Orbits? So they all peturb evenly
-- [ ] Update Sim to include peturbations
+- [x] Update Sim to include peturbations
 
 ### Ground Station TODOs
 - [ ] Find a "moon blocking" event using the Ground Station code as verification.
