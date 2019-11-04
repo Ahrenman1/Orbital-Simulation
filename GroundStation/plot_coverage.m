@@ -1,7 +1,8 @@
-%plot_data2
-close all
+%% Function to plot all the Coverage data and find the longest and shortest period of visability. 
+close all;
 q=1;
 legend_text=[];
+%uncomment the Q line and plot to plot each satelite. 
 for i = 1:6
     legend_text=[];
     for j= 1:4
