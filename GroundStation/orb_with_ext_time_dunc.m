@@ -1,4 +1,6 @@
 function orbit = orb_with_ext_time_dunc(a,e,in,w,omega,t)
+%This code is changed to work for the ground station coverage files.
+
 %a=apoaisi
 %e is eccentricity
 %in is inclination
