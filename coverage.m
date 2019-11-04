@@ -20,6 +20,15 @@ u = (6.67*10^-11)*(7.34767*10^22);
 n = sqrt(u/a^3);
 T = (2*pi)/n;
 
+%% sets up the pertubation variables for the donut orbit
+J2 = 2.039e-4;
+T1 = (J2*(rm^2))/(a^2);
+T2 = 1-((3/2)*((sind(in))^2));
+ncorrected = n*(1+(((3/2)*T1)*T2));
+incangle = cosd(in);
+ascendingnode = (-3/2)*T1*ncorrected*incangle;
+disp(ascendingnode)
+
 %% finds the number of points to be analysed on each slice of the sphere
 n_pts=length(s);
 
@@ -27,7 +36,8 @@ n_pts=length(s);
 az = 45;
 el = 45;
 per = 3;
-timelist = 0.01:per*T/500:per*T;
+ts = per*T/1000;
+timelist = 0.01:ts:per*T/2;
 
 %% begins the loop for the defined time
 for i = timelist
@@ -39,10 +49,11 @@ for i = timelist
     clf
     grid on
     hold on
-    view(az,el)
+    view(45,45)
     
     %% initialises each orbit coordinate at 0 elements, then for each satellite in the orbit - the point in space is added to the list  
     coord = [];
+    omega = omega + ascendingnode*ts*180/pi;
     for j = 0:no-1
         coords = kep(a,i,t+(T/no)*j,e);
         newco = ref(coords(1),coords(2),in,w,omega);
@@ -50,30 +61,35 @@ for i = timelist
     end
     %% same occurs for other six orbits
     coord1 = [];
+    omega1 = omega1 + ascendingnode*ts*180/pi;
     for j = 0:no1-1
         coords1 = kep(a1,i,t1+(T/no)*j,e1);
         newco1 = ref(coords1(1),coords1(2),in1,w1,omega1);
         coord1 = [coord1; newco1']; 
     end
     coord2 = [];
+    omega2 = omega2 + ascendingnode*ts*180/pi;
     for j = 0:no2-1
         coords2 = kep(a2,i,t2+(T/no)*j,e2);
         newco2 = ref(coords2(1),coords2(2),in2,w2,omega2);
         coord2 = [coord2; newco2'];
     end
     coord3 = [];
+    omega3 = omega3 + ascendingnode*ts*180/pi;
     for j = 0:no3-1
         coords3 = kep(a3,i,t3+(T/no)*j,e3);
         newco3 = ref(coords3(1),coords3(2),in3,w3,omega3);
         coord3 = [coord3; newco3'];
     end
     coord4 = [];
+    omega4 = omega4 + ascendingnode*ts*180/pi;
     for j = 0:no4-1
         coords4 = kep(a4,i,t4+(T/no)*j,e4);
         newco4 = ref(coords4(1),coords4(2),in4,w4,omega4);
         coord4 = [coord4; newco4'];
     end
     coord5 = [];
+    omega5 = omega5 + ascendingnode*ts*180/pi;
     for j = 0:no5-1
         coords5 = kep(a5,i,t5+(T/no)*j,e5);
         newco5 = ref(coords5(1),coords5(2),in5,w5,omega5);
@@ -217,12 +233,12 @@ for i = timelist
             scatter3(coord(v,1),coord(v,2),coord(v,3),'b','filled')
             hold on
         end
-
+        hold on
         for v = 1:no1
             scatter3(coord1(v,1),coord1(v,2),coord1(v,3),'g','filled')
             hold on
         end
- 
+
         for v = 1:no2
             scatter3(coord2(v,1),coord2(v,2),coord2(v,3),'r','filled')
             hold on
@@ -258,11 +274,11 @@ end
 
 %% plots the percentage coverage arrays against time in different colours
 figure(2)
-plot(timelist,perlist654,'g','Linewidth',7);
+plot(timelist,perlist654,'g','Linewidth',3);
 hold on
-plot(timelist,perlist65,'b-','Linewidth',3);
+plot(timelist,perlist65,'b-','Linewidth',1);
 hold on
-plot(timelist,perlist6,'r','Linewidth',5);
+plot(timelist,perlist6,'r','Linewidth',3);
 hold on
 
 %% adds a vertical line indicating a period has passed by on the graph
