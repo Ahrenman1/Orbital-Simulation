@@ -54,14 +54,17 @@ for loop_time_ind=1:length(time_vect)
     oblqEarth = -23.4; % Obliquity of Earth (degs)
     oblqMoon = 1.54; % Obliquity of Moon (degs)
     rotMatrix = [1 0 0 ; 0 cosd(oblqEarth+oblqMoon) -sind(oblqEarth+oblqMoon) ; 0 sind(oblqEarth+oblqMoon) cosd(oblqEarth+oblqMoon)]; % Rotation around x-axis
-    Moon_Earth_vect = (rotMatrix*Moon_Earth_coord);
+    Moon_Earth_vect = rotMatrix*Moon_Earth_coord;
     
     % Saving the Moon Earth Vector
     % Check the Moon_Earth_vect is a vertical 1x3 vector
     ME_Vect(:,loop_time_ind) = Moon_Earth_vect;
     
     %Convert geodetic latitude, longitude, altitude (LLA) coordinates to Earth-centered inertial (ECI) coordinates:
-    Earth_Glasg_vect=lla2eci(glasgow_lla,loop_time)';
+    Earth_Glasg_coord=lla2eci(glasgow_lla,loop_time)';
+    
+    %converting the earth gasg coord to the vect in MCI
+    Earth_Glasg_vect = (rotMatrix*Earth_Glasg_coord);
 
     %calculating vectors for glasgoe
     Moon_Glasg_vect = Moon_Earth_vect+Earth_Glasg_vect;
@@ -78,9 +81,14 @@ for loop_time_ind=1:length(time_vect)
             Glasg_Sat_Vect=Moon_sat_coord-Moon_Glasg_vect;
             %Earth_sat_vect=Moon_sat_coord - Moon_Earth_vect;
             
+            %calculatiing the satelite angle up from the horison from
+            %glasgow
+            Horison_ang=90-angle_between(Glasg_Sat_Vect,Earth_Glasg_vect);
+            
             %checking to see the satelite is above the horison
-            if (angle_between(Glasg_Sat_Vect,Earth_Glasg_vect) > 90 )
-                break
+            if (Horison_ang > 0 )
+                y_n_array(orb_num,sat_num,loop_time_ind) = 1;
+                continue
             end
             
             % testing to see if satelite is in moons shadow form flasgows perspective
@@ -97,18 +105,23 @@ for loop_time_ind=1:length(time_vect)
             %                          the Glasg -> Moon vect
             % Glasg -> Moon is -ve Moon -> Glasg Vect.
             sat_ang = angle_between(Glasg_Sat_Vect,-Moon_Glasg_vect);
-
-            if sat_ang<=shadow_ang
-                disp("in moons shadow!")
-                y_n_array(orb_num,sat_num,loop_time_ind) = 2;
-                break
+            
+            %making sure sat is "behind" moon
+            %   ie distance to sat > dist to moon
+            % this only works in tandem witht he sat_ang if statment
+            sat_further=sqrt(sum(Glasg_Sat_Vect.^2))>sqrt(sum(Moon_Glasg_vect.^2));
+            
+            if sat_further
+                if sat_ang<=shadow_ang
+                    % optional line for highlighting moon shadow events
+                    %disp("in moons shadow!")
+                    y_n_array(orb_num,sat_num,loop_time_ind) = 2;
+                    continue
+                end
             end
             
             
-            % if it passes both tests then set the array to true
-            y_n_array(orb_num,sat_num,loop_time_ind) = 1;
-            
-            
+            % if it passes both tests then leave array as zero
             
         end
     end
@@ -119,10 +132,11 @@ end
 
 function deg = angle_between(v1, v2)
     %quick function to calc angle between two vects;
-    %uses the dot product
+    deg = acosd(dot(v1,v2)/(norm(v1)*norm(v2)));
+    %{
     angle_r = atan2(norm(cross(v1,v2)), dot(v1,v2));
     deg=angle_r*180/pi;
-    
+    %}
     %m1=sqrt(sum(v1.^2));
     %m2=sqrt(sum(v2.^2));
 

@@ -11,18 +11,32 @@ s=s.*rm;
 b=b.*rm;
 c=c.*rm;
 
+%% Earth Valuez
+re = 6.3e6;
+[se,be,ce]=sphere(50);
+se=se.*re;
+be=be.*re;
+ce=ce.*re;
+
+%% Bool to plot earth or not
+plot_earth = false;
+
 %% incrementing view
 ang = 0;
 
 colour = hsv(6); %to hold the 6 different colours
 %% initialising frame variabe for video
-vid_file = VideoWriter('post_simulation4.avi');
+vid_file = VideoWriter('post_simulation6.avi');
 open(vid_file);
 
-max_val=7e6;
+
+max_val=4e8;
+%{
 xlim([-max_val max_val]) 
 ylim([-max_val max_val])
-zlim([-max_val max_val]) 
+zlim([-max_val max_val])
+%}
+
 for timestep = 1:length(all_location_variables)
     clf
     for orbit_number = 1:6
@@ -41,16 +55,31 @@ for timestep = 1:length(all_location_variables)
         end
     end
     
-    %% fixing the limits
-    xlim([-max_val max_val]) 
-    ylim([-max_val max_val])
-    zlim([-max_val max_val]) 
-    view(ang, 30); ang= ang+1;
+    
+
     %% plotting the moon
     moon=surf(s,b,c);
     moon.EdgeColor = 'none';
     colormap(gray);
     hold on
+    
+    %% Plotting the Earth
+    if plot_earth
+        earth=surf(se+ME_Vect(1,timestep),be+ME_Vect(2,timestep),ce+ME_Vect(3,timestep));
+        earth.EdgeColor = 'none';
+        %colormap(winter);
+        hold on
+    end
+    
+    %% fixing the limits
+    view(3)
+    %{
+    xlim([-max_val max_val]) 
+    ylim([-max_val max_val])
+    zlim([-max_val max_val]) 
+    %view(ang, 30); ang= ang+1;
+    %}
+    axis equal
     %% For frame
     frame = getframe(gcf); %temp Vairable
     writeVideo(vid_file,frame);
