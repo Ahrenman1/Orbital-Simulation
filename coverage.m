@@ -318,5 +318,5 @@ legend(["4 Satellite Coverage","5 Satellite Coverage","6 Satellite Coverage"],'l
 xlabel('Time (s)')
 ylabel('Coverage (%)')
 title('Percentage coverage') 
-save('coverage_dot_m_workspace');
+save('Sat_Coords.mat','timelist','all_location_variables');
 end

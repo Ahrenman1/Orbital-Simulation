@@ -1,11 +1,14 @@
 function y_n = ground_station_visible(Moon_sat_coord, UTC)
     
+    % Getting Earth Coords (or moon coords Relitive to earth)
     Moon_Earth_coord = 1000.*planetEphemeris(juliandate(UTC),'Moon','Earth');
     
+    % Calulating Earth Pos Rel to MOON INERTIAL FRAME
     oblqEarth = -23.4; % Obliquity of Earth (degs)
     oblqMoon = 1.54; % Obliquity of Moon (degs)
     rotMatrix = [1 0 0 ; 0 cosd(oblqEarth+oblqMoon) -sind(oblqEarth+oblqMoon) ; 0 sind(oblqEarth+oblqMoon) cosd(oblqEarth+oblqMoon)]; % Rotation around x-axis
     Moon_Earth_coord = (rotMatrix*Moon_Earth_coord.')';
+    
     
     % Moon_sat_coord is Satelite location in xyz from moon frame of referencre;
     % Moon_Earth_coord is Moon location in xyz from moon frame of referencre;
