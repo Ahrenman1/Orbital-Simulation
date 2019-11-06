@@ -39,6 +39,15 @@ per = 3;
 ts = per*T/1000;
 timelist = 0.01:ts:per*T/2;
 
+%% initialising frame variabe for video
+vid_file = VideoWriter('simulation.avi');
+open(vid_file);
+
+%% initialising 'Grand Matrix' to hold all variables for plot
+all_location_variables=zeros(6,4,3,length(timelist));
+%Six Orbs, 4 Satelites per orbit, 3 coords (x,y,z), and a value for each
+%timestep.
+
 %% begins the loop for the defined time
 for i = timelist
 
@@ -134,6 +143,7 @@ for i = timelist
         fiveov = find(unpnts(:,4)==5);
         sixov = find(unpnts(:,4)>=6);
         
+        
         %% for all the indexes, the matrices are added to by the points which have the number of satellites seeing them
         parfor ov = 1:length(oneov)-1
             index = oneov(ov);
@@ -192,7 +202,7 @@ for i = timelist
         %% plots the points seen by one satellite in blue
         [n1,m1] = size(onemat);
         if n1 > 0
-            plot3(onemat(:,1),onemat(:,2),onemat(:,3),'b*')
+            plot3(onemat(:,1),onemat(:,2),onemat(:,3),'b.')
             disp('Less than 4')
         end
         hold on
@@ -200,7 +210,7 @@ for i = timelist
         %% plots the points seen by two satellites in red
         [n2,m2] = size(twomat);
         if n2 > 0
-            plot3(twomat(:,1),twomat(:,2),twomat(:,3),'r*')
+            plot3(twomat(:,1),twomat(:,2),twomat(:,3),'r.')
             disp('Less than 4')
         end
         hold on
@@ -208,23 +218,23 @@ for i = timelist
         %% etc
         [n3,m3] = size(threemat);
         if n3 > 0
-            plot3(threemat(:,1),threemat(:,2),threemat(:,3),'k*')
+            plot3(threemat(:,1),threemat(:,2),threemat(:,3),'k.')
             disp('Less than 4')
         end
         hold on
         [n4,m4] = size(fourmat);
         if n4 > 0           
-            plot3(fourmat(:,1),fourmat(:,2),fourmat(:,3),'g*')
+            plot3(fourmat(:,1),fourmat(:,2),fourmat(:,3),'g.')
         end
         hold on
         [n5,m5] = size(fivemat);
         if n5 > 0
-            plot3(fivemat(:,1),fivemat(:,2),fivemat(:,3),'c*')
+            plot3(fivemat(:,1),fivemat(:,2),fivemat(:,3),'c.')
         end
         hold on
         [n6,m6] = size(sixmat);
         if n6 > 0
-            plot3(sixmat(:,1),sixmat(:,2),sixmat(:,3),'m*')
+            plot3(sixmat(:,1),sixmat(:,2),sixmat(:,3),'m.')
         end
         hold on
         
@@ -267,10 +277,26 @@ for i = timelist
         
     end  
     hold on
-    
+    %pbaspect([1 1 1])
     %% updates the viewing angle to give a rounded view
-    az = az + 3;
+    %az = az + 3;
+    
+    %% For frame
+    frame = getframe(gcf); %temp Vairable
+    writeVideo(vid_file,frame);
+    
+    %% Saving all the satelite locations:
+    loop_iteration = find(timelist == i);
+    all_location_variables(1,:,:,loop_iteration)=coord;
+    all_location_variables(2,:,:,loop_iteration)=coord1;
+    all_location_variables(3,:,:,loop_iteration)=coord2;
+    all_location_variables(4,:,:,loop_iteration)=coord3;
+    all_location_variables(5,:,:,loop_iteration)=coord4;
+    all_location_variables(6,:,:,loop_iteration)=coord5;
+    
 end
+%% Exporing video file
+close(vid_file);
 
 %% plots the percentage coverage arrays against time in different colours
 figure(2)
@@ -292,4 +318,5 @@ legend(["4 Satellite Coverage","5 Satellite Coverage","6 Satellite Coverage"],'l
 xlabel('Time (s)')
 ylabel('Coverage (%)')
 title('Percentage coverage') 
+save('Sat_Coords.mat','timelist','all_location_variables');
 end

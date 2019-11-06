@@ -9,7 +9,7 @@ for i = 1:6
         figure(i);%(q);q=q+1;
         hold on
         %plot(Day_Array,vis_array(:,i,j)');
-        title("Number of Glasgow-Visable Satelites");
+        title("Glasgow- Satelite Visability");
         xlabel("Time (Days)")
         ylabel("Satelite Visibile? (1=Yes, 0=No)");
         temp_str=sprintf("Orbit %d Sat. %d",i,j);

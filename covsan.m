@@ -1,3 +1,5 @@
+%%Covsan is the TOP level script to preform simulation.
+
 a = 6.609e6;
 n = 4;
 in = 55;
