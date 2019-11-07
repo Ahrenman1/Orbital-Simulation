@@ -1,7 +1,8 @@
 %% GSV TO PLOT Results
 close all;
 
-%hidden_array=GSV_2(datenum(2029,1,1),timelist,all_location_variables);
+load("Sat_Coords.mat")
+hidden_array=GSV_2(datenum(2029,1,1),timelist,all_location_variables);
 
 %
 plot_style = ["-","--","-.",":"];
@@ -15,10 +16,11 @@ for orb_num = 1:6
     end
     title("Glasgow- Satelite Visability");
     xlabel("Time (Days) after 01/01/2029");
-    ylabel("1=Eath Interference, 2=Moon Interference)");
+    ylabel("1=Eath Interference, 2=Moon Interference");
     %temp_str=sprintf("Orbit %d Sat. %d",orb_num,sat_num);
     legend('Sat 1','Sat 2','Sat 3','Sat 4');
 end
 %}
 
+save('Satelite_Visibility_Array.mat', 'hidden_array')
 

@@ -2,6 +2,9 @@
 % this script was written to find the timings of visibility and non
 % visibility of the satelites
 
+load("Sat_Coords.mat");
+load("Satelite_Visibility_Array.mat");
+
 dt = timelist(2) - timelist(1);
 
 longest_visible_time_array = zeros(6,4);

@@ -3,6 +3,10 @@ close all
 figure
 hold on
 
+%loading adequite variables.
+load('Earth_Pos_Array.mat');
+load('Sat_Coords.mat');
+
 %% Moon Values
 rm = 1737100;
 [s,b,c]=sphere(50);
@@ -82,7 +86,7 @@ for timestep = 1:length(all_location_variables)
     ylim([-3.7e7 6e6])
     zlim([-5.5e6 5.5e6]) 
     %view(ang, 30); ang= ang+1;
-    %}
+    %}untitled.m
     %
 
     %% For frame
