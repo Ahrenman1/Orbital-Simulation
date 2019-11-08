@@ -1,5 +1,19 @@
+load('Constellation_Angle_Variation_1Year.mat')
 
+timelistDays = a_timelist/(24);
 
+for j = 1:1:6
+    subplot(6,1,j);
+    axis([0,365,-120,180]);
+    xlabel('Days since 1 January 2029');
+    for k = 1:1:4
+        hold on
+        plot(timelistDays,squeeze(a(j,k,:)));
+        
+    end
+end
+
+%{
 for i = 1:6
     anglesDelta(i,:) = angles(i,:) - angles(i,1);
     plot([1:365],anglesDelta);
@@ -15,3 +29,4 @@ xlabel('Days since 1 January 2029');
 ylabel('Variation from initial angle (\circ)');
 axis([0,365,-120,180]);
 yticks([-120:15:180].')
+%}
