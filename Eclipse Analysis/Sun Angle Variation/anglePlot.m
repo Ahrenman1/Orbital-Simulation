@@ -4,12 +4,14 @@ timelistDays = a_timelist/(24);
 
 for j = 1:1:6
     subplot(6,1,j);
-    axis([0,365,-120,180]);
+    axis([0,365,-180,180]);
+    title(['Satellite-Sun Angle Variation - Orbit Plane ',num2str(j)]);
     xlabel('Days since 1 January 2029');
+    ylabel('\Deltaangle (\circ)');
+    yticks([-120:60:180].')
     for k = 1:1:4
         hold on
-        plot(timelistDays,squeeze(a(j,k,:)));
-        
+        plot(timelistDays,squeeze(a(j,k,:)-a(j,k,1)));
     end
 end
 
