@@ -14,7 +14,7 @@ function all_location_variables=Coord_Generator(time_vector,a,e,in,w,omega,t,no,
     ncorrected = n*(1+(((3/2)*T1)*T2));
     incangle = cosd(in);
     ascendingnode = (-3/2)*T1*ncorrected*incangle;
-    disp(ascendingnode)
+    %disp(ascendingnode)
 
     %% Time Variables
     ts= time_vector(2)-time_vector(1);
@@ -28,7 +28,7 @@ function all_location_variables=Coord_Generator(time_vector,a,e,in,w,omega,t,no,
     %% begins the loop for the defined time
     for i = timelist
         %% Percentage done
-        disp(100*i/timelist(end));
+        %disp(100*i/timelist(end));
 
 
         %% initialises each orbit coordinate at 0 elements, then for each satellite in the orbit - the point in space is added to the list  

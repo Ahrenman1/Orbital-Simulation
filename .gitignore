@@ -1,3 +1,5 @@
 *.asv
 *.avi
 *.png
+/Coverage_Plot.m~
+/Eff_Coverage.m~

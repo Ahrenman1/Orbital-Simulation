@@ -7,7 +7,7 @@ n = 4;          %number of sattelites per orbit
 in = 55;        %inclination of each of the orbits
 
 %%% Setting up the time array. All values in seconds.
-ts = 60; %Timestep
+ts = 600; %Timestep
 t_max = 60*60*24*100; % Length of Sim
 timelist = 0:ts:t_max; %vector of time values 
 
@@ -17,4 +17,4 @@ toc
 tic
 satelittes_visble = Eff_Coverage(all_location_variables);
 toc
-save('Sat_Coords.mat','timelist','all_location_variables');
+save('Sat_Coords.mat','timelist','all_location_variables','satelittes_visble');

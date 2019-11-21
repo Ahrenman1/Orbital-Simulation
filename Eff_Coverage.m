@@ -28,28 +28,29 @@ function sats_visible = Eff_Coverage(sat_mat)
     %%% initialising the answer varirable
     sats_visible = zeros(sp_a,sp_b,sim_length);
 
-    for lv_a = 1:length(sp_a)
-        for lv_b = 1:length(sp_b)
+    for lv_a = 1:sp_a
+        
+        for lv_b = 1:sp_b
             
             %preventing broadcast variables
             moon_x_coord = s(lv_a,lv_b);
             moon_y_coord = b(lv_a,lv_b);
             moon_z_coord = c(lv_a,lv_b);
             
-            parfor sim_step = 1:sim_length
+            for sim_step = 1:sim_length 
                 %%% Within this loop it will iterate over every value within the
                 %%% sphere.
                 moon_coord = [moon_x_coord;moon_y_coord;moon_z_coord]; %Moon Point vect
 
                 sats_visib_bool = zeros(orbs,sats); %bool matrix to hold whether satelites are visible.
 
-                for orb = 1:orbs
-                    % orb is current_orbit, orbs is total orbits
+                for orb = 1:orbs%par loop here
+                    % orb is current orbit, orbs is total orbits
                     for sat = 1:sats
                         % sat is current_sat, sats is total sats per orbit.
 
                         %%% Within this loop iterate for each satelite individually
-
+                        
 
 
                         % This code runs for every sat in every simulation
