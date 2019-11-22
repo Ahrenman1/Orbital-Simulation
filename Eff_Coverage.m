@@ -37,21 +37,24 @@ function sats_visible = Eff_Coverage(sat_mat)
             moon_y_coord = b(lv_a,lv_b);
             moon_z_coord = c(lv_a,lv_b);
             
-            for sim_step = 1:sim_length 
+            %ptinting to console
+            clc
+            fprintf('Coverage Calc At %8.3f Percent', 100*(lv_b/50 -0.02 + lv_a-1)/50);
+            
+            parfor sim_step = 1:sim_length %par loop here
                 %%% Within this loop it will iterate over every value within the
                 %%% sphere.
                 moon_coord = [moon_x_coord;moon_y_coord;moon_z_coord]; %Moon Point vect
 
                 sats_visib_bool = zeros(orbs,sats); %bool matrix to hold whether satelites are visible.
 
-                for orb = 1:orbs%par loop here
+                for orb = 1:orbs
                     % orb is current orbit, orbs is total orbits
                     for sat = 1:sats
                         % sat is current_sat, sats is total sats per orbit.
 
                         %%% Within this loop iterate for each satelite individually
                         
-
 
                         % This code runs for every sat in every simulation
                         % step.
@@ -66,7 +69,5 @@ function sats_visible = Eff_Coverage(sat_mat)
             end
         end
     end
-    
-    
 end
 
