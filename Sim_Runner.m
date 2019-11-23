@@ -18,3 +18,19 @@ tic
 satelittes_visble = Eff_Coverage(all_location_variables);
 cov_time = toc;
 save('Sat_Coords.mat','timelist','all_location_variables','satelittes_visble');
+
+%% Ahrens Coverage Analysis
+% Percentage Plots
+Coverage_Analysis_Plot(satelittes_visble,timelist,[4 5 6 7 8]);
+% Visualisation
+Coverage_Plot(all_location_variables,satelittes_visble);
+
+%% Duncs Ground Station Link Analysis
+% Adding Path to active directory
+addpath('GroundStation')
+GSV_Runner;
+
+%% Laurences Eclipse Analysis
+% Plz Add here laurence.
+
+

@@ -4,6 +4,8 @@
 function Coverage_Plot(sat_mat, sats_visib_mat)
     figure
     clf
+    title('Black <4, Yellow = [4,5], Green = [6,7], Blue > 7')
+
     view(3)
     %%% Taking size of the sats_mat for number of orbs, sats/orb, and the sim
     %%% lenght:
@@ -12,8 +14,8 @@ function Coverage_Plot(sat_mat, sats_visib_mat)
     
     %need to get the maximum number of visible satelites.
     visib_col = [[0, 0, 0];[0, 0, 0];[0, 0, 0];[0, 0, 0];... %0-3
-                [1, 1, 0];[0, 1, 0];[0, 0, 1];[0, 1, 1]; ... %4-7
-                [1,0,1];[1,0,1];[1,0,1];[1,0,1];[1,0,1];[1,0,1]]; %8-13
+                [1, 1, 0];[1, 1, 0];[0, 1, 0];[0, 1, 0]; ... %4-7
+                [0,0,1]; [0,0,1]; [0,0,1]; [0,0,1]; [0,0,1]; [0,0,1]]; %8-13
     
     %initial calculation for the coords and color of the sphere
     rm = 1737100;
@@ -33,10 +35,9 @@ function Coverage_Plot(sat_mat, sats_visib_mat)
     % initialising frame variabe for video
     vid_file = VideoWriter('test_simulation.avi');
     open(vid_file);
-    frame = struct('cdata', cell(1,sim_length), 'colormap', cell(1,sim_length));
     
     % Axis settings
-    lim = 7e6;
+    %lim = 7e6;
     
     for sim_step = 1:sim_length
         %%% Plotting The Satellites
@@ -65,21 +66,17 @@ function Coverage_Plot(sat_mat, sats_visib_mat)
         scatter3(Xsp,Ysp,Zsp,8,Dot_col,'filled');
         
         %setttng ax limits
-        xlim([-1*lim lim])
-        ylim([-1*lim lim])
-        zlim([-1*lim lim])
-        view(3)
         axis equal
-        
         % For frame
-        frame(sim_step) = getframe(gcf); %temp Vairable
-        
+        %this frame variable takes up too much memory and crashes matlab
+        %frame(sim_step) = getframe(gcf); %temp Vairable
+        writeVideo(vid_file,getframe(gcf));
         clf
 
     end
-    
+    save('temp_var2')
     %writing video file
-    writeVideo(vid_file,frame);
+    
     close(vid_file);
     
 end
