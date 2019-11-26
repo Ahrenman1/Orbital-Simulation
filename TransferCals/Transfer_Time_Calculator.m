@@ -14,4 +14,15 @@ while juliandate(time2test) < juliandate(t_end)
     time2test(3) = time_vals(end,3)+14;
 end
 
+% Converting time_vals to more noral values
+time_vals_corr = [];
+[a,~] = size(time_vals);
+for i = 1:a
+    time_vals_corr = [time_vals_corr; datetime(juliandate(time_vals(i,:)),'ConvertFrom','juliandate')];
+end
+
+%replacing the time_vals
+time_vals=time_vals_corr;
+
+%saves as mat in case anyone doesnt have th aerospace toolbox installed
 save('Moon_Capture_Arrival_Times','time_vals');

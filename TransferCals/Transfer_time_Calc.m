@@ -15,7 +15,7 @@ function Time_out = Transfer_time_Calc(time,depth)
     % Finding value
     [Pos, Vel] = planetEphemeris(juliandate(time(1),time(2),time(3),time(4),time(5),time(6)),'Earth','Moon');
     
-    % Assuming the z is normal to the equitorial plane.
+    % Assuming the z is normal to the equitorial plane, which it should be
     % if its not then this is where the transofrmation needs to occur.
 
     % if the value is less than a this val above/below the horison
