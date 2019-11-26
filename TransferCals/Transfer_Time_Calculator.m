@@ -2,8 +2,8 @@
 % this script runs the Transfer_time_Calc function for the time period ot
 % find the correct arrival times.
 t_start = [2029,1,1,0,0,0];
-%t_end = [2035,12,31,0,0,0];
-t_end = [2029,12,31,0,0,0]; %testing end point
+t_end = [2035,12,31,0,0,0];
+%t_end = [2029,12,31,0,0,0]; %testing end point
 
 time_vals = [];
 
