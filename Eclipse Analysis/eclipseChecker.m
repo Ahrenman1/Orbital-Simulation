@@ -1,10 +1,10 @@
 function inEclipse = eclipseChecker(satCoords,tStep,tMax,t0Year,t0Month,t0Day,t0Hour,t0Minute,checkSatEclipse,checkLunarEclipse,enPlotting,enVideo)
 
-    % satCoords: 1x1 Struct containing:
+    % satCoords, generated using Constellation_Generator.m, 1x1 Struct containing:
     %   timelist: time array
     %   all_location_variables: 4-D double (plane,satellite,dimension,time)
-    % tStep = time step [minutes]
-    % tMax = time to stop checking [minutes]
+    % tStep = time step [in resolution of satCoords.timelist]
+    % tMax = time to stop checking [as with tStep]
     % checkLunarEclipse: boolean value, check for Lunar eclipses
     % enPlotting: boolean value, enables scatter plot of satellite points
     % enVideo: boolean value, enable saving of animation to video.avi
