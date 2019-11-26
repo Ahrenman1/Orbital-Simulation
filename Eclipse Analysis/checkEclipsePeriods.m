@@ -1,7 +1,7 @@
 
 satCoords = load("Sat_Coords_30Day_1mRes.mat");
 
-tStep = 15;
+tStep = 60;
 tMax = 60*12;
 year = 2035;
 month = 8;
@@ -41,7 +41,8 @@ for j = 1:1:j_max
         min_eclipse(j,k) = min(eclipse_length);
     end
 end
-save(datestr(datetime(year,month,day)),'max_eclipse','min_eclipse','inEclipse');
+saveLocation = ['Results/', datestr(datetime(year,month,day))];
+save(saveLocation,'max_eclipse','min_eclipse','inEclipse');
 
 disp('Maximum eclipse times (mins)');
 disp(max_eclipse/60);
