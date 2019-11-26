@@ -78,5 +78,6 @@ function Coverage_Plot(sat_mat, sats_visib_mat)
     %writing video file
     
     close(vid_file);
+
     
 end

@@ -1,5 +1,5 @@
 %% GSV TO PLOT Results
-close all;
+%close all;
 
 load("Sat_Coords.mat")
 hidden_array=GSV_2(datenum(2029,1,1),timelist,all_location_variables);

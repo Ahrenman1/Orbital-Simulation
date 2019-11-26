@@ -36,4 +36,8 @@ function percent_vect = Coverage_Analysis_Plot(Sat_Visibility_Array, time_series
     xlabel('Time /days')
     ylabel('Percent of Surface points covered')
     legend(legend_str)
+    
+    %putting a protectve figure here, as some function runs a clf before
+    %calling a new figure.
+    figure
 end

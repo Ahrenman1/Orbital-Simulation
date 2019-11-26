@@ -39,9 +39,9 @@ function sats_visible = Eff_Coverage(sat_mat)
             
             %ptinting to console
             clc
-            fprintf('Coverage Calc At %8.3f Percent', 100*(lv_b/50 -0.02 + lv_a-1)/50);
+            fprintf('Coverage Calc At %8.3f Percent', 100*(lv_b/sp_b + lv_a-1)/(sp_a));
             
-            parfor sim_step = 1:sim_length %par loop here
+            for sim_step = 1:sim_length %par loop here
                 %%% Within this loop it will iterate over every value within the
                 %%% sphere.
                 moon_coord = [moon_x_coord;moon_y_coord;moon_z_coord]; %Moon Point vect
@@ -69,5 +69,6 @@ function sats_visible = Eff_Coverage(sat_mat)
             end
         end
     end
+    disp('');
 end
 
