@@ -1,4 +1,4 @@
-
+% Load from file
 satCoords = load("Sat_Coords_30Day_1mRes.mat");
 
 tStep = 60;
