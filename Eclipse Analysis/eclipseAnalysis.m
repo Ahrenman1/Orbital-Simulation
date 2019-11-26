@@ -1,6 +1,6 @@
-eclipseTimes = find(inEclipse);
+function [max_eclipse, min_eclipse] = eclipseAnalysis(inEclipse,tStep)
 
-Ti = 5;
+eclipseTimes = find(inEclipse);
 
 for j = 1:1:6
     for k = 1:1:4
@@ -10,8 +10,9 @@ for j = 1:1:6
         eclipse_at=eclipseTimes(1);
         eclipse_length=[];
         for m = 1:length(thisEclipseTimes)-1
-            if thisEclipseTimes(m)+Ti == thisEclipseTimes(m+1)
-                this_eclipse=this_eclipse+Ti;
+            if thisEclipseTimes(m)+tStep == thisEclipseTimes(m+1)
+                this_eclipse=this_eclipse+tStep;
+                disp('blah')
             else
                 eclipse_length=[eclipse_length this_eclipse];
                 eclipse_at=[eclipse_at eclipseTimes(m+1)];

@@ -1,5 +1,5 @@
 %function eclipseTime = eclipseTime()
-clf;
+
 Rm = 1.7e6; % Moon radius
 Re = 6.371e6; % Earth radius
 
@@ -12,130 +12,81 @@ oblqEarth = -23.4; % Obliquity of Earth (degs)
 rotMatrix = [   1       0                         0                           ;...
                 0       cosd(oblqEarth)  -sind(oblqEarth)   ;...
                 0       sind(oblqEarth)  cosd(oblqEarth)]   ; % Rotation around x-axis
-            
-%figure;
 
-
-colour = hsv(6); %to hold the 6 different colours
-%{
-v = VideoWriter('video.avi');
-v.FrameRate = 20;
-open(v);
-%}
 inEclipse = [];
 
-Ti = 60; % Minutes
-Tmax = 60*24*30; % Minutes
+Ti = 1; % Minutes
+Tmax = 60*24; % Minutes
 trailThreshold = 100;
+tRemainString = '-';
+tElapsed = 0;
+tElapsedTotal = 0;
 for i = timelist(1:Ti:Tmax)
-    tStart = tic;
     index=find(timelist == i);
+    tStart = tic;
+    tElapsedTotal = tElapsed + tElapsedTotal;
     
-    timeJulian = juliandate(2029,1,1,0,0,i);
-    %timeJulian = juliandate(2029,12,20,18,0,i);
+    %timeJulian = juliandate(2029,1,1,0,0,i);
+    timeJulian = juliandate(2029,6,25,22,0,i);
     %timeJulian = juliandate(2030,12,9,18,0,i);
-    timestamp = datetime(timeJulian,'convertfrom','juliandate');
     
-    fprintf('%f%% done. ',i*100/timelist(Tmax));
+    timestamp = datetime(timeJulian,'convertfrom','juliandate');
+    fprintf('%f%% done.\t',i*100/timelist(Tmax));
+    fprintf('Elapsed:%s\t',datestr(tElapsedTotal/(60*60*24),'HH:MM:SS'));
+    fprintf("Approx %s remaining.\t",tRemainString);
+    fprintf('%s\n',timestamp);
+    
     r_earth_ECI = 1000*planetEphemeris(timeJulian,'Moon','Earth');
     r_sun_ECI = 1000*planetEphemeris(timeJulian,'Moon','Sun'); % Earth centered ephemeris (J2000/ICRF)
     r_sun_MCI = rotMatrix*r_sun_ECI.';
     r_earth_MCI = rotMatrix*r_earth_ECI.';
-    %% Draw Sun and Earth vectors
-    hold on
-    axis equal;
-    %set(gca,'XLim',[-7e6 7e6],'YLim',[-7e6 7e6],'ZLim',[-7e6 7e6])
-    axis([-7e6,7e6,-7e6,7e6,-7e6,7e6]);
-    set(gcf, 'Position', [50 50 800 800]);
-    view(2);
-    title(datestr(timestamp));
-    sunLine = mArrow3([0,0,0],r_sun_MCI.','color',[1,0.65,0]);
-    earthLine = mArrow3([0,0,0],r_earth_MCI.','color','b');
-    
-    [sx,sy,sz]=sphere;
-    h=surf(sx*Rm,sy*Rm,sz*Rm,'FaceColor',[0.9,0.9,0.9]);
-    [cx,cy,cz] = cylinder2(Rm,r_sun_MCI);
-    cx(2, :) = -r_sun_MCI(1);
-    cy(2, :) = -r_sun_MCI(2);
-    cz(2, :) = -r_sun_MCI(3);
-    cylinder = surf(cx,cy,cz,'FaceAlpha',0.5,'FaceColor',[0 0 0]);
-    %colormap(gray);
-    
     %% Multisat
     for j = 1:1:j_max
         for k = 1:1:k_max
             
-            sat_pt = zeros(j,k);
             r_sat = squeeze(all_location_variables(j,k,:,index));
             r_sat_earth = r_earth_MCI - r_sat;
             r_sat_sun = r_sun_MCI - r_sat;
-            
-            if index <= trailThreshold
-                x_trail=squeeze(all_location_variables(j,k,1,1:index));
-                y_trail=squeeze(all_location_variables(j,k,2,1:index));
-                z_trail=squeeze(all_location_variables(j,k,3,1:index));
-            else
-                x_trail=squeeze(all_location_variables(j,k,1,index-trailThreshold:index));
-                y_trail=squeeze(all_location_variables(j,k,2,index-trailThreshold:index));
-                z_trail=squeeze(all_location_variables(j,k,3,index-trailThreshold:index));
-            end
-            plot3(x_trail,y_trail,z_trail,'Color',colour(j,:));
-            
             
             %% Eclipse check
             if dot(r_sat,r_sun_MCI)<=0
                 if norm(cross(r_sat,(r_sun_MCI/norm(r_sun_MCI))))<=Rm
                     inEclipse(j,k,index) = true;
-                    sat_pt(j,k) = scatter3(r_sat(1),r_sat(2),r_sat(3),50,'r','filled');
+                    fprintf('Satellite Eclipse!\n');
                 else
                     if dot(r_sat_earth,r_sat_sun)>0
                         if norm(cross(r_sat_earth,(r_sat_sun/norm(r_sat_sun))))<=Re
                             inEclipse(j,k,index) = true;
-                            sat_pt(j,k) = scatter3(r_sat(1),r_sat(2),r_sat(3),50,'r','filled');
+                            fprintf('Plane %i, Sat %i\t',j,k);
+                            fprintf('Lunar Eclipse!\n');
                         else
                             inEclipse(j,k,index) = false;
-                            sat_pt(j,k) = scatter3(r_sat(1),r_sat(2),r_sat(3),50,'g','filled');
                         end
                     else
                         inEclipse(j,k,index) = false;
-                        sat_pt(j,k) = scatter3(r_sat(1),r_sat(2),r_sat(3),50,'g','filled');
                     end
                 end
             else
                 if dot(r_sat_earth,r_sat_sun)>0
                     if norm(cross(r_sat_earth,(r_sat_sun/norm(r_sat_sun))))<=Re
                         inEclipse(j,k,index) = true;
-                        sat_pt(j,k) = scatter3(r_sat(1),r_sat(2),r_sat(3),50,'r','filled');
+                        fprintf('Plane %i, Sat %i\t',j,k);
+                        fprintf('Lunar Eclipse!\n');
                     else
                         inEclipse(j,k,index) = false;
-                        sat_pt(j,k) = scatter3(r_sat(1),r_sat(2),r_sat(3),50,'g','filled');
                     end
                 else
                     inEclipse(j,k,index) = false;
-                    sat_pt(j,k) = scatter3(r_sat(1),r_sat(2),r_sat(3),50,'g','filled');
                 end
             end
         end   
     end
     
-    
-    %% Animate + capture frame
-    pause(0.001);
-    %{
-    frame=getframe(gcf);
-    writeVideo(v,frame);
-    %}
-    clf;
-    
     tElapsed = toc(tStart);
-    tElapsedString = datestr(tElapsed*(numel(timelist)-index)/(60*60*24*Ti), 'HH:MM:SS');
-    fprintf("Approx %s remaining. \n",tElapsedString);
+    tRemainString = datestr(tElapsed*(numel(timelist(1:Tmax))-index)/(60*60*24*Ti), 'HH:MM:SS');
 end
 
-%close(v);
-
 eclipseTimes = find(inEclipse);
-
 for j = 1:1:j_max
     for k = 1:1:k_max
         inEclipseList = squeeze(inEclipse(j,k,:));
@@ -160,12 +111,3 @@ for j = 1:1:j_max
     end
 end
 
-%{
-maxEclipse = Ti*max(eclipse_length);
-maxEclipseIndex = find(eclipse_length==maxEclipse);
-maxEclipseTime = eclipse_at(maxEclipseIndex);
-
-minEclipse = Ti*min(eclipse_length);
-minEclipseIndex = find(eclipse_length==minEclipse);
-minEclipseTime = eclipse_at(minEclipseIndex);
-%}
