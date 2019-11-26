@@ -13,4 +13,4 @@ This code takes the orbital parameters of 6 orbits, and simulates them moving ar
 - [ ] Fix Eff_Coverage.m to apporpriately find coverage values.
 
 ### Eclipse Analysis TODOs
-- [] Expand comments
+- [ ] Expand comments
