@@ -1,5 +1,5 @@
 %% Calculating /\V
-% for hoghman transfer, r_init = R_earth + 500km
+% for hohmann transfer, r_init = R_earth + 500km
 % r_2 = distance to moon.
 
 load('Moon_Capture_Arrival_Times.mat')
@@ -35,10 +35,12 @@ v_sat = zeros(length(time_vals),1);
 dV_inj = zeros(length(time_vals),1);
 dV_inc = zeros(length(time_vals),1);
 dV_spr = zeros(length(time_vals),1);
+dV_eccent = zeros(length(time_vals),1);
 
 
 %Calculating the dV required for each time interval
 for i = 1:length(time_vals)
+    startT = tic;
     %calculating DV
     [m_pos, m_vel] = planetEphemeris(juliandate(time_vals(i)),'Earth','Moon');
     m_pos = m_pos*1000; %converting from km to m
@@ -65,31 +67,34 @@ for i = 1:length(time_vals)
     
     % making orbit eccentric to spread sattleites
     % ahren plz add here!
-    dV_satellite = sqrt((-mum/7.699e6)+(2*mum/r_p))-sqrt(mum/r_p);
-    disp(dV_satellite)
+    dV_eccent(i) = sqrt((-mum/7.699e6)+(2*mum/r_p))-sqrt(mum/r_p);
     dV_spread_1 = sqrt((2*mum/r_p)-(2*mum/(r_p+r_spr)))-sqrt(mum/r_spr);
     dV_spr(i) = 2*dV_spread_1;%reverse kick is identical
     
+    elapsedT = toc(startT);
+    remainingT = datestr(elapsedT*(length(time_vals)-i)/(60*60*24),'HH:MM:SS');
+    fprintf('%s',remainingT);
+    fprintf(' to go\n');
 end
 
 
-figure
+figure(1)
 plot(time_vals,dV_esc,'*')
-title('\DeltaV to the Moon (Hoghman Transfer)')
+title('\DeltaV to the Moon (Hohmann Transfer)')
 
-figure
+figure(2)
 plot(time_vals,transfer_time/(60*60*24),'*')
-title('ToF to the Moon (Hoghman Transfer)')
+title('ToF to the Moon (Hohmann Transfer)')
 
 dV_tot = dV_esc + dV_inj + dV_inc + dV_spr;
 
-figure
+figure(3)
 plot(time_vals,dV_tot,'*')
-title('\DeltaV_{tot} to Desired Orbit (Hoghman Transfer)')
+title('\DeltaV_{tot} to Desired Orbit (Hohmann Transfer)')
 
-save('dV_vals','dV_tot','dV_esc','dV_inj','dV_inc','dV_spr')
+save('dV_vals','dV_tot','dV_esc','dV_inj','dV_inc','dV_eccent','dV_spr')
 
-figure
+figure(4)
 plot(time_vals,dV_esc,'*',time_vals,dV_inj,'*',time_vals,dV_inc,'*',time_vals,dV_spr,'*',time_vals,dV_tot,'*')
 title('\DeltaVs to Desired Orbit')
 legend('\DeltaV Escape','\DeltaV Inject','\DeltaV Incline','\DeltaV Spread','\DeltaV Total')
