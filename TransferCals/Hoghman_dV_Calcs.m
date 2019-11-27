@@ -32,7 +32,6 @@ r_spr = 2*a_post-r_p;%spreading orbit height
 dV_esc = zeros(length(time_vals),1); 
 transfer_time = zeros(length(time_vals),1);
 v_sat = zeros(length(time_vals),1);
-%dV_capture(i) = zeros(length(time_vals),1);
 dV_inj = zeros(length(time_vals),1);
 dV_inc = zeros(length(time_vals),1);
 dV_spr = zeros(length(time_vals),1);
@@ -46,7 +45,7 @@ for i = 1:length(time_vals)
     m_vel = m_vel*1000; %converting from km to m
     
     R_2 = norm(m_pos);
-    dV_esc(i) = sqrt(mu/R_1).*(sqrt(2*R_2/R_1+R_2)-1);
+    dV_esc(i) = sqrt(mu/R_1).*(sqrt(2*R_2/(R_1+R_2))-1);
     
     %Calculating time ToF
     a = (R_1 + R_2)/2;
@@ -85,7 +84,7 @@ figure
 plot(time_vals,dV_tot,'*')
 title('\DeltaV_{tot} to Desired Orbit (Hoghman Transfer)')
 
-save('dV_vals','dV_tot')
+save('dV_vals','dV_tot','dV_esc','dV_inj','dV_inc','dV_spr')
 
 figure
 plot(time_vals,dV_esc,'*',time_vals,dV_inj,'*',time_vals,dV_inc,'*',time_vals,dV_spr,'*',time_vals,dV_tot,'*')
