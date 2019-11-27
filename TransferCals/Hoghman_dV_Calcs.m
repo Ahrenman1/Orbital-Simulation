@@ -64,6 +64,8 @@ for i = 1:length(time_vals)
     
     % making orbit eccentric to spread sattleites
     % ahren plz add here!
+    dV_satellite = sqrt((-mum/7.699e6)+(2*mum/r_p))-sqrt(mum/r_p);
+    disp(dV_satellite)
     dV_spread_1 = sqrt((2*mum/r_p)-(2*mum/(r_p+r_spr)))-sqrt(mum/r_spr);
     dV_spr(i) = 2*dV_spread_1;%reverse kick is identical
     
