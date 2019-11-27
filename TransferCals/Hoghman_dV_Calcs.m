@@ -45,7 +45,8 @@ for i = 1:length(time_vals)
     m_vel = m_vel*1000; %converting from km to m
     
     R_2 = norm(m_pos);
-    dV_esc(i) = sqrt(mu/R_1).*(sqrt(2*R_2/(R_1+R_2))-1);
+    dV_esc(i) = sqrt((2*mu/R_1)-(2*mu/(R_1+R_2)))-sqrt(mu/R_1);
+    %dV_esc(i) = sqrt(mu/R_1).*(sqrt(2*R_2/(R_1+R_2))-1);
     
     %Calculating time ToF
     a = (R_1 + R_2)/2;
@@ -75,7 +76,7 @@ plot(time_vals,dV_esc,'*')
 title('\DeltaV to the Moon (Hoghman Transfer)')
 
 figure
-plot(time_vals,transfer_time,'*')
+plot(time_vals,transfer_time/(60*60*24),'*')
 title('ToF to the Moon (Hoghman Transfer)')
 
 dV_tot = dV_esc + dV_inj + dV_inc + dV_spr;
