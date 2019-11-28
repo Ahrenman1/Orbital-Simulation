@@ -24,7 +24,7 @@ inc = 54.74; % inclination from MTR slides
 %plz check
 t_init=2*pi*sqrt(r_p.^3/mum);
 t_post=t_init*5/4;
-a_post=(mum*(t_post/(2*pi)).^2).^1/3;
+a_post=(mum*(t_post/(2*pi)).^2).^(1/3);
 r_spr = 2*a_post-r_p;%spreading orbit height 
 
 
@@ -73,10 +73,8 @@ for i = 1:length(time_vals)
     
     elapsedT = toc(startT);
     remainingT = datestr(elapsedT*(length(time_vals)-i)/(60*60*24),'HH:MM:SS');
-    fprintf('%s',remainingT);
-    fprintf(' to go\n');
+    fprintf('%s to go\n',remainingT);
 end
-
 
 figure(1)
 plot(time_vals,dV_esc,'*')

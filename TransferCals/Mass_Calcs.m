@@ -13,11 +13,11 @@ Delta_4_K = calc_K(Delta_4_Isp);
 
 Delta_4_M_init = 24*prod(Delta_4_K).*200;
 
-disp(Delta_4_M_init)
+fprintf('Delata 4 Payload To LEO Req = %6.0f Kg\n',Delta_4_M_init)
 
 
 Falcon_H_M_init = 24*prod(calc_K([348,348,348,348])).*200;
-disp(Falcon_H_M_init)
+fprintf('Falcon Heavy Payload To LEO Req = %6.0f Kg\n',Falcon_H_M_init)
 
 function K = calc_K(Is)
 load('dV_vals.mat');
