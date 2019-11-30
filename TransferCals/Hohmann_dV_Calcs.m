@@ -92,7 +92,8 @@ figure(2)
 plot(time_vals,transfer_time/(60*60*24),'*')
 title('ToF to the Moon (Hohmann Transfer)')
 
-dV_tot = dV_esc + dV_inj + dV_inc + dV_sat_spr + dV_orb_spr;
+
+dV_tot = dV_esc + dV_inj + 791.71 + dV_sat_spr + dV_orb_spr;%dV_inc
 
 figure(3)
 plot(time_vals,dV_tot,'*')

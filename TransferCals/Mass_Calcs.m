@@ -41,11 +41,11 @@ fprintf('Percent Saving for Falcon Heavy = %3.0f \n',(1-(Falcon_H_M_init_adv/Fal
 function K = calc_K(Is)
 load('dV_vals.mat');
 g0 = 9.81;
-K_1 = exp(max(dV_esc)./(Is(1).*g0)); %LEO -> MUN
-K_2 = exp(max(dV_inj)./(Is(2).*g0)); %MUN  CAPTURE
-K_3 = exp(max(dV_orb_spr)./(Is(2).*g0)); %SPREAD ORBITS
-K_4 = exp(max(dV_inc)./(Is(3).*g0)); %CHANGE INC
-K_5 = exp(max(dV_sat_spr)./(Is(4).*g0)); %SPREAD SATTELITES
+K_1 = exp(dV_esc(110)./(Is(1).*g0)); %LEO -> MUN
+K_2 = exp(dV_inj(110)./(Is(2).*g0)); %MUN  CAPTURE
+K_3 = exp(dV_orb_spr(110)./(Is(2).*g0)); %SPREAD ORBITS
+K_4 = exp(791.71./(Is(3).*g0));%dV_inc(110)./(Is(3).*g0)); %CHANGE INC
+K_5 = exp(dV_sat_spr(110)./(Is(4).*g0)); %SPREAD SATTELITES
 K = [K_1, K_2, K_3, K_4, K_5];
 end
 
