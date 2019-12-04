@@ -2,7 +2,7 @@
 %close all;
 
 load("Sat_Coords.mat")
-hidden_array=GSV_2(datenum(2029,1,1),timelist,all_location_variables);
+%hidden_array=GSV_2(datenum(2029,1,1),timelist,all_location_variables);
 
 %
 plot_style = ["-","--","-.",":"];
