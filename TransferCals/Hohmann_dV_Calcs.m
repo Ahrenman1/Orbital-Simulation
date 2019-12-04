@@ -23,7 +23,7 @@ inc = 54.74; % inclination from MTR slides
 %ahrens claulation for spreading the sattelites 
 %plz check
 t_init=2*pi*sqrt(r_p.^3/mum);
-t_post=t_init*5/4;
+t_post=t_init*11/4;
 a_post=(mum*(t_post/(2*pi)).^2).^1/3;
 r_spr = 2*a_post-r_p;%spreading orbit height 
 
@@ -81,20 +81,28 @@ end
 figure(1)
 plot(time_vals,dV_esc,'*')
 title('\DeltaV to the Moon (Hohmann Transfer)')
+xlabel('Date (year)')
+ylabel('\DeltaV (m/s)')
 
 figure(2)
 plot(time_vals,transfer_time/(60*60*24),'*')
 title('ToF to the Moon (Hohmann Transfer)')
+xlabel('Date (year)')
+ylabel('Time of flight (days)');
 
-dV_tot = dV_esc + dV_inj + dV_inc + dV_spr;
+dV_tot = dV_esc + dV_inj + dV_inc + dV_eccent + dV_spr;
 
 figure(3)
 plot(time_vals,dV_tot,'*')
 title('\DeltaV_{tot} to Desired Orbit (Hohmann Transfer)')
+xlabel('Date (year)')
+ylabel('\DeltaV (m/s)')
 
 save('dV_vals','dV_tot','dV_esc','dV_inj','dV_inc','dV_eccent','dV_spr')
 
-figure(4)
-plot(time_vals,dV_esc,'*',time_vals,dV_inj,'*',time_vals,dV_inc,'*',time_vals,dV_spr,'*',time_vals,dV_tot,'*')
+figure
+plot(time_vals,dV_esc,'*',time_vals,dV_inj,'*',time_vals,dV_inc,'*',time_vals,dV_eccent,'*',time_vals,dV_spr,'*',time_vals,dV_tot,'*')
 title('\DeltaVs to Desired Orbit')
-legend('\DeltaV Escape','\DeltaV Inject','\DeltaV Incline','\DeltaV Spread','\DeltaV Total')
+legend('\DeltaV Escape','\DeltaV Inject','\DeltaV Incline','\DeltaV Eccentricity','\DeltaV Spread','\DeltaV Total')
+xlabel('Date (year)')
+ylabel('\DeltaV (m/s)')
